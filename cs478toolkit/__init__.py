@@ -2,6 +2,7 @@ import argparse
 import arff
 import numpy as np
 import logging
+import re
 
 
 def _log_level(count):
@@ -30,8 +31,26 @@ def parse_args():
     return parser
 
 
-def load_data(file, add_bias=True, encode_nominal=True):
-    arff_data = arff.load(open(file, 'r'), encode_nominal)
+# HACK: arff.load only accepts an open file descriptor and BYU CS uses a custom arff format
+def _fix_attribute_types(f):
+    # TODO: do not load entire contents of file into RAM at once
+    f.seek(0)
+    s = f.read()
+    f.seek(0)
+    s = re.sub(r'continuous', 'numeric', s, flags=re.IGNORECASE)
+    f.write(s)
+    f.truncate()
+    f.seek(0)
+
+
+def load_data(file_path, add_bias=True, encode_nominal=True):
+
+    with open(file_path, 'r+') as f:
+        try:
+            arff_data = arff.load(f, encode_nominal)
+        except arff.BadAttributeType:
+            _fix_attribute_types(f)
+            arff_data = arff.load(f, encode_nominal)
     data = np.array(arff_data['data'])
     if add_bias:
         data = np.insert(data, -1, 1, axis=1)
@@ -39,7 +58,7 @@ def load_data(file, add_bias=True, encode_nominal=True):
 
 
 def initialize(
-        log_format="%(filename)s:%(lineno)s:%(funcName)s():\n%(message)s",
+        log_format='%(filename)s:%(lineno)s:%(funcName)s():\n%(message)s',
         args_parser=parse_args,
         data_loader=load_data):
     args, _ = args_parser().parse_known_args()
