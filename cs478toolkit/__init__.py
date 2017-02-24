@@ -27,7 +27,7 @@ def parse_args():
         required=True,
         help='Path to ARFF file to load')
     # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
-    return parser.parse_args()
+    return parser
 
 
 def load_data(file, add_bias=True, encode_nominal=True):
@@ -42,7 +42,7 @@ def initialize(
         log_format="%(filename)s:%(lineno)s:%(funcName)s():\n%(message)s",
         args_parser=parse_args,
         data_loader=load_data):
-    args = args_parser()
+    args, _ = args_parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
         # random.seed(args.seed)
