@@ -11,7 +11,6 @@ def _log_level(count):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Toolkit for BYU CS 478")
-
     parser.add_argument(
         '-v',
         '--verbose',
@@ -28,7 +27,6 @@ def parse_args():
         required=True,
         help='Path to ARFF file to load')
     # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
-
     return parser.parse_args()
 
 
@@ -37,7 +35,7 @@ def load_data(file, add_bias=True, encode_nominal=True):
     data = np.array(arff_data['data'])
     if add_bias:
         data = np.insert(data, -1, 1, axis=1)
-    return data
+    return (data, data[:,:-1], data[:,-1:])
 
 
 def initialize(
