@@ -10,6 +10,18 @@ def _log_level(count):
     return levels[min(len(levels) - 1, count)]
 
 
+# HACK: arff.load only accepts an open file descriptor and BYU CS uses a custom arff format
+def _fix_attribute_types(f):
+    # TODO: do not load entire contents of file into RAM at once
+    f.seek(0)
+    s = f.read()
+    f.seek(0)
+    s = re.sub(r'continuous', 'numeric', s, flags=re.IGNORECASE)
+    f.write(s)
+    f.truncate()
+    f.seek(0)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Toolkit for BYU CS 478")
     parser.add_argument(
@@ -31,20 +43,7 @@ def parse_args():
     return parser
 
 
-# HACK: arff.load only accepts an open file descriptor and BYU CS uses a custom arff format
-def _fix_attribute_types(f):
-    # TODO: do not load entire contents of file into RAM at once
-    f.seek(0)
-    s = f.read()
-    f.seek(0)
-    s = re.sub(r'continuous', 'numeric', s, flags=re.IGNORECASE)
-    f.write(s)
-    f.truncate()
-    f.seek(0)
-
-
-def load_data(file_path, add_bias=True, encode_nominal=True):
-
+def load_data(file_path, label_size=1, encode_nominal=True, add_bias=True):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
@@ -53,18 +52,16 @@ def load_data(file_path, add_bias=True, encode_nominal=True):
             arff_data = arff.load(f, encode_nominal)
     data = np.array(arff_data['data'])
     if add_bias:
-        data = np.insert(data, -1, 1, axis=1)
-    return (data, data[:,:-1], data[:,-1:])
+        data = np.insert(data, -label_size, 1, axis=1)
+    return (data, data[:,:-label_size], data[:,-label_size:])
 
 
-def initialize(
-        log_format='%(filename)s:%(lineno)s:%(funcName)s():\n%(message)s',
-        args_parser=parse_args,
-        data_loader=load_data):
+def parse_args():
     args, _ = args_parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
         # random.seed(args.seed)
         np.random.seed(int(args.seed))
-    logging.basicConfig(format=log_format, level=_log_level(args.verbose))
-    return data_loader(args.arff)
+    # log_format = '%(filename)s:%(lineno)s:%(funcName)s(): %(message)s'
+    # logging.basicConfig(format=log_format, level=_log_level(args.verbose))
+    return args
