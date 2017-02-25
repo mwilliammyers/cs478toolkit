@@ -22,7 +22,7 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
-def parse_args():
+def _parse_args():
     parser = argparse.ArgumentParser(description="Toolkit for BYU CS 478")
     parser.add_argument(
         '-v',
@@ -56,8 +56,8 @@ def load_data(file_path, label_size=1, encode_nominal=True, add_bias=True):
     return (data, data[:,:-label_size], data[:,-label_size:])
 
 
-def parse_args():
-    args, _ = args_parser().parse_known_args()
+def parse_args(parser=parse_args):
+    args, _ = parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
         # random.seed(args.seed)
