@@ -43,7 +43,7 @@ def _parse_args():
     return parser
 
 
-def load_data(file_path, label_size=1, encode_nominal=True, add_bias=True):
+def load_data(file_path, label_size=1, encode_nominal=True, add_bias=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
