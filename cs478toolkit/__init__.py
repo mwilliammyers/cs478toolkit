@@ -49,7 +49,11 @@ def _parse_args():
     return parser
 
 
-def load_data(file_path, label_size=1, encode_nominal=True, add_bias=False):
+def split(data, label_size):
+    return data[:, :-label_size], data[:, -label_size:]
+
+
+def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
@@ -59,7 +63,7 @@ def load_data(file_path, label_size=1, encode_nominal=True, add_bias=False):
     data = np.array(arff_data['data'])
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
-    return (data, data[:, :-label_size], data[:, -label_size:])
+    return split(data, label_size)
 
 
 def parse_args(parser=_parse_args):
