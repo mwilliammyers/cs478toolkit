@@ -32,13 +32,20 @@ def _parse_args():
         help='Increase verbosity')
     # parser.add_argument('-N', '--normalize', action='store_true', help='Use normalized data')
     parser.add_argument('-R', '--seed', help='Random seed')
-    # parser.add_argument('-L', required=True, choices=['baseline', 'perceptron', 'neuralnet', 'decisiontree', 'knn'], help='Learning Algorithm')
     parser.add_argument(
-        '-A',
-        '--arff',
-        metavar='filename',
+        '-f',
+        '--file',
+        metavar='FILE',
         required=True,
         help='Path to ARFF file to load')
+    parser.add_argument(
+        '-l',
+        '--layers',
+        metavar='LAYER',
+        nargs='+',
+        type=int,
+        required=True,
+        help='Layer sizes, in the format: <input> <hidden>... <output>')
     # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
     return parser
 
@@ -53,7 +60,7 @@ def load_data(file_path, label_size=1, encode_nominal=True, add_bias=False):
     data = np.array(arff_data['data'])
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
-    return (data, data[:,:-label_size], data[:,-label_size:])
+    return (data, data[:, :-label_size], data[:, -label_size:])
 
 
 def parse_args(parser=_parse_args):
