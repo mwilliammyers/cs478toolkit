@@ -1,13 +1,7 @@
 import argparse
 import arff
 import numpy as np
-import logging
 import re
-
-
-def _log_level(count):
-    levels = [logging.WARNING, logging.INFO, logging.DEBUG]
-    return levels[min(len(levels) - 1, count)]
 
 
 # HACK: arff.load only accepts an open file descriptor and BYU CS uses a custom arff format
@@ -74,6 +68,4 @@ def parse_args(parser=_parse_args):
         # Use a seed for deterministic results
         # random.seed(args.seed)
         np.random.seed(int(args.seed))
-    # log_format = '%(filename)s:%(lineno)s:%(funcName)s(): %(message)s'
-    # logging.basicConfig(format=log_format, level=_log_level(args.verbose))
     return args
