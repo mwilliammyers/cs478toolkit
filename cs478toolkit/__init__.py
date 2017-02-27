@@ -46,6 +46,11 @@ def _parse_args():
         type=int,
         required=True,
         help='Layer sizes, in the format: <input> <hidden>... <output>')
+    parser.add_argument(
+        '-c',
+        '--checkpoint',
+        metavar='FILE',
+        help='Checkpoint file to load weights, biases etc. from')
     # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
     return parser
 
