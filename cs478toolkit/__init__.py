@@ -15,6 +15,13 @@ def _fix_attribute_types(f):
     f.truncate()
     f.seek(0)
 
+def percent(value):
+    value = float(value)
+    if not 0 < value <= 100:
+        raise argparse.ArgumentError()
+    if value > 1 :
+        value /= 100.0
+    return value
 
 def _parse_args():
     parser = argparse.ArgumentParser(description="Toolkit for BYU CS 478")
@@ -45,6 +52,12 @@ def _parse_args():
         '--checkpoint',
         metavar='FILE',
         help='Checkpoint file to load weights, biases etc. from')
+    parser.add_argument(
+        '-s',
+        '--training',
+        type=percent,
+        metavar='PERCENT',
+        help='Percentage of entire dataset for the training set size')
     # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
     return parser
 
@@ -60,7 +73,7 @@ def _split(data, label_size):
     return data[:, :-label_size], data[:, -label_size:]
 
 
-def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
+def load(file_path, label_size=1, training_percent=None, encode_nominal=True, add_bias=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
