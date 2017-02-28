@@ -49,7 +49,14 @@ def _parse_args():
     return parser
 
 
-def split(data, label_size):
+def shuffle(features, labels):
+    if features.shape[0] != labels.shape[0]:
+        raise ValueError("Features {} and labels {} must have the same number of rows".format(features.shape, labels.shape))
+    permutation = np.random.permutation(features.shape[0])
+    return features[permutation], labels[permutation]
+
+
+def _split(data, label_size):
     return data[:, :-label_size], data[:, -label_size:]
 
 
@@ -63,7 +70,7 @@ def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
     data = np.array(arff_data['data'])
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
-    return split(data, label_size)
+    return _split(data, label_size)
 
 
 def parse_args(parser=_parse_args):
