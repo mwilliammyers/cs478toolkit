@@ -1,3 +1,4 @@
+from __future__ import division, print_function
 import argparse
 import arff
 import numpy as np
@@ -14,21 +15,21 @@ def percent(value):
 
 
 def _parse_args():
-    parser = argparse.ArgumentParser(description="Toolkit for BYU CS 478")
+    parser = argparse.ArgumentParser(
+        description="Toolkit for BYU CS 478",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '-v',
         '--verbose',
         action='count',
         default=0,
-        help='Increase verbosity')
-    # parser.add_argument('-N', '--normalize', action='store_true', help='Use normalized data')
-    parser.add_argument('-R', '--seed', help='Random seed')
+        help='increase verbosity')
     parser.add_argument(
         '-f',
         '--file',
         metavar='FILE',
         required=True,
-        help='Path to ARFF file to load')
+        help='path to ARFF file to load')
     parser.add_argument(
         '-l',
         '--layers',
@@ -36,19 +37,20 @@ def _parse_args():
         nargs='+',
         type=int,
         required=True,
-        help='Layer sizes, in the format: <input> <hidden>... <output>')
+        help='layer sizes: <input> <hidden>... <output>')
     parser.add_argument(
         '-c',
         '--checkpoint',
         metavar='FILE',
-        help='Checkpoint file to load weights, biases etc. from')
+        help='checkpoint file to load weights, biases etc. from')
     parser.add_argument(
-        '-s',
+        '-t',
         '--training',
         type=percent,
+        default=.75,
         metavar='PERCENT',
-        help='Percentage of entire dataset for the training set size')
-    # parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
+        help='percentage of entire dataset for the training set size')
+    parser.add_argument('-R', '--seed', help='random seed')
     return parser
 
 
@@ -56,7 +58,6 @@ def parse_args(parser=_parse_args):
     args, _ = parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
-        # random.seed(args.seed)
         np.random.seed(int(args.seed))
     return args
 
@@ -69,8 +70,15 @@ def rmse(predictions, targets):
     return np.sqrt(mse(predictions, targets))
 
 
-def measure_accuracy(predictions, targets, evaluator=mse):
+def measure_error(predictions, targets, evaluator=mse):
     return evaluator(predictions, targets)
+
+
+def measure_accuracy(predictions, targets, axis=1):
+    equals_mask = np.equal(predictions, targets)
+    equals_in_each = np.sum(equals_mask, axis=axis)
+    accuracy = np.sum(equals_in_each == targets.shape[axis]) / targets.shape[0]
+    return accuracy if accuracy < 1.0 else 1.0
 
 
 def shuffle(features, labels):
@@ -86,11 +94,11 @@ def _split(data, label_size):
     return data[:, :-label_size], data[:, -label_size:]
 
 
-def split(features, labels, training_percent):
-    training_percent = float(training_percent)
-    if not 0 < training_percent < 1:
-        raise ValueError("training_percent must be in range: 0-1")
-    index = int(training_percent * features.shape[0])
+def split(features, labels, percent):
+    percent = float(percent)
+    if not 0 < percent < 1:
+        raise ValueError("percent must be in range: 0-1")
+    index = int(percent * features.shape[0])
     return features[:index], features[index:], labels[:index], labels[index:]
 
 
@@ -115,6 +123,7 @@ def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
             arff_data = arff.load(f, encode_nominal)
 
     data = np.array(arff_data['data'])
+    np.random.shuffle(data)
 
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
