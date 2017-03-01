@@ -18,5 +18,6 @@ pip install git+https://github.com/mwilliammyers/cs478toolkit
 ```python
 import cs478toolkit
 
-data = cs478toolkit.initialize()
+args = cs478toolkit.parse_args()
+data, targets = cs478toolkit.load(args.file, label_size=args.layers[-1])
 ```
