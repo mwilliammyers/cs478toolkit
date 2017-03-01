@@ -42,7 +42,7 @@ def _parse_args():
         '-c',
         '--checkpoint',
         metavar='FILE',
-        help='checkpoint file to load weights, biases etc. from')
+        help='checkpoint file to save/load weights, biases etc. from')
     parser.add_argument(
         '-t',
         '--training',
@@ -50,7 +50,9 @@ def _parse_args():
         default=.75,
         metavar='PERCENT',
         help='percentage of entire dataset for the training set size')
-    parser.add_argument('-R', '--seed', help='random seed')
+    parser.add_argument(
+        '-r', '--learning-rate', type=float, default=.1, help='learning rate')
+    parser.add_argument('-s', '--seed', help='random seed')
     return parser
 
 
