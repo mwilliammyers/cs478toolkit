@@ -3,6 +3,7 @@ import argparse
 import arff
 import numpy as np
 import re
+import random
 
 
 def percent(value):
@@ -61,6 +62,7 @@ def parse_args(parser=_parse_args):
     if args.seed:
         # Use a seed for deterministic results
         np.random.seed(int(args.seed))
+        random.seed(int(args.seed))
     return args
 
 
