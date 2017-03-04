@@ -1,7 +1,5 @@
-from __future__ import division, print_function
+from .visual import bar, plot
+from .cli import parse_args
+from .data import load, shuffle, split
 
-import random
-from visual import *
-from cli import *
-from evaluators import *
-from data import *
+__all__ = ['bar', 'plot', 'parse_args', 'load', 'shuffle', 'split']
