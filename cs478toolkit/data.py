@@ -49,4 +49,4 @@ def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
 
-    return _split(data, label_size)d
+    return _split(data, label_size)
