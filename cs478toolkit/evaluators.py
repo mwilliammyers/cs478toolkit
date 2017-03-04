@@ -10,11 +10,11 @@ def rmse(predictions, targets):
     return np.sqrt(mse(predictions, targets))
 
 
-def error(predictions, targets, evaluator=mse):
+def measure_error(predictions, targets, evaluator=mse):
     return evaluator(predictions, targets)
 
 
-def accuracy(predictions, targets, axis=1):
+def measure_accuracy(predictions, targets, axis=1):
     equals_mask = np.equal(predictions, targets)
     equals_in_each = np.sum(equals_mask, axis=axis)
     accuracy = np.sum(equals_in_each == targets.shape[axis]) / targets.shape[0]
