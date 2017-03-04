@@ -61,8 +61,8 @@ def parse_args(parser=_parse_args):
     args, _ = parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
-        np.random.seed(int(args.seed))
         random.seed(int(args.seed))
+        np.random.seed(int(args.seed))
     return args
 
 
