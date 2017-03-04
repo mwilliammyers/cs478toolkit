@@ -15,6 +15,17 @@ def _split(data, label_size):
     return data[:, :-label_size], data[:, -label_size:]
 
 
+# def split(data, percent_chunks, axis=0):
+#     if data.ndim != 2:
+#         raise ValueError("data to split must be a 2D numpy array")
+#     splits = np.cumsum(percent_chunks)
+#     if splits[-1] == 100:
+#         splits = np.divide(splits, 100.)
+#     if splits[-1] != 1.:
+#         raise ValueError("Percents must sum to 1.0 or 100")
+#     # np.random.shuffle(data)
+#     return np.split(data, splits[:-1] * data.shape[1], axis)
+
 def split(features, labels, percent):
     percent = float(percent)
     if not 0 < percent < 1:
