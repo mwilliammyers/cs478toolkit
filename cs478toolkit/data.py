@@ -46,7 +46,7 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
-def load(file_path, label_size=0, encode_nominal=True, add_bias=False):
+def load(file_path, label_size=0, encode_nominal=True, add_bias=False, shuffle=True):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
@@ -55,7 +55,9 @@ def load(file_path, label_size=0, encode_nominal=True, add_bias=False):
             arff_data = arff.load(f, encode_nominal)
 
     data = np.array(arff_data['data'])
-    np.random.shuffle(data)
+
+    if shuffle:
+        np.random.shuffle(data)
 
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
