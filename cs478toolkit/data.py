@@ -46,7 +46,7 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
-def load(file_path, label_size=1, encode_nominal=True, add_bias=False):
+def load(file_path, label_size=0, encode_nominal=True, add_bias=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
