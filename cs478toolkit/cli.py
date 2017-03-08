@@ -28,14 +28,6 @@ def _parse_args():
         required=True,
         help='path to ARFF file to load')
     parser.add_argument(
-        '-l',
-        '--layers',
-        metavar='LAYER',
-        nargs='+',
-        type=int,
-        required=True,
-        help='layer sizes: <input> <hidden>... <output>')
-    parser.add_argument(
         '-c',
         '--checkpoint',
         metavar='FILE',
@@ -55,6 +47,14 @@ def _parse_args():
         default=10,
         metavar='FOLDS',
         help='number of folds used for k-fold cross validation')
+    parser.add_argument(
+        '-l',
+        '--layers',
+        metavar='LAYER',
+        nargs='+',
+        type=int,
+        required=True,
+        help='layer sizes: <input> <hidden>... <output>')
     parser.add_argument(
         '-r', '--learning-rate', type=float, default=.1, help='learning rate')
     parser.add_argument('-s', '--seed', help='random seed')
