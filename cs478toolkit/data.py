@@ -1,6 +1,8 @@
 import arff
 import numpy as np
 import re
+import sklearn.model_selection
+
 
 def shuffle(features, labels):
     if features.shape[0] != labels.shape[0]:
@@ -9,6 +11,10 @@ def shuffle(features, labels):
             format(features.shape, labels.shape))
     permutation = np.random.permutation(features.shape[0])
     return features[permutation], labels[permutation]
+
+
+def k_fold(data, n_splits, shuffle=False):
+    return sklearn.model_selection.KFold(n_splits, shuffle=shuffle).split(data)
 
 
 def _split(data, label_size):
@@ -25,6 +31,7 @@ def _split(data, label_size):
 #         raise ValueError("Percents must sum to 1.0 or 100")
 #     # np.random.shuffle(data)
 #     return np.split(data, splits[:-1] * data.shape[1], axis)
+
 
 def split(features, labels, percent):
     percent = float(percent)
@@ -46,7 +53,11 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
-def load(file_path, label_size=0, encode_nominal=True, add_bias=False, shuffle=True):
+def load(file_path,
+         label_size=0,
+         encode_nominal=True,
+         add_bias=False,
+         shuffle=True):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
