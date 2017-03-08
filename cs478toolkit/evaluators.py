@@ -19,3 +19,16 @@ def measure_accuracy(predictions, targets, axis=1):
     equals_in_each = np.sum(equals_mask, axis=axis)
     accuracy = np.sum(equals_in_each == targets.shape[axis]) / targets.shape[0]
     return accuracy if accuracy < 1.0 else 1.0
+
+
+def evaluate(data,
+             targets,
+             predict_function,
+             measure_functions=None,
+             *args):
+    if not measure_functions:
+        measure_functions = [measure_error, measure_accuracy]
+    predictions = []
+    for instance in data:
+        predictions.append(predict_function(instance, *args))
+    return (fn(predictions, targets) for fn in measure_functions)
