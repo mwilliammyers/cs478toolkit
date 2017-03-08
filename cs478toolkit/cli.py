@@ -40,13 +40,21 @@ def _parse_args():
         '--checkpoint',
         metavar='FILE',
         help='checkpoint file to save/load weights, biases etc. from')
-    parser.add_argument(
+    training_methods = parser.add_mutually_exclusive_group()
+    training_methods.add_argument(
         '-t',
         '--training',
         type=percent,
         default=.75,
         metavar='PERCENT',
         help='percentage of entire dataset for the training set size')
+    training_methods.add_argument(
+        '-F',
+        '--folds',
+        type=percent,
+        default=10,
+        metavar='FOLDS',
+        help='number of folds used for k-fold cross validation')
     parser.add_argument(
         '-r', '--learning-rate', type=float, default=.1, help='learning rate')
     parser.add_argument('-s', '--seed', help='random seed')
