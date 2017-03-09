@@ -14,18 +14,12 @@ def measure_error(predictions, targets, evaluator=mse):
     return evaluator(predictions, targets)
 
 
-def measure_accuracy(predictions, targets, axis=1):
-    equals_mask = np.equal(predictions, targets)
-    equals_in_each = np.sum(equals_mask, axis=axis)
-    accuracy = np.sum(equals_in_each == targets.shape[axis]) / targets.shape[0]
-    return accuracy if accuracy < 1.0 else 1.0
+def measure_accuracy(predictions, targets):
+    accuracy = np.count_nonzero(predictions == targets) / len(targets)
+    return np.minimum(1.0, accuracy)
 
 
-def evaluate(data,
-             targets,
-             predict_function,
-             measure_functions=None,
-             *args):
+def evaluate(data, targets, predict_function, measure_functions=None, *args):
     if not measure_functions:
         measure_functions = [measure_error, measure_accuracy]
     predictions = []
