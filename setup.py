@@ -11,6 +11,7 @@ setup(
     packages=['cs478toolkit'],
     install_requires=[
         'liac-arff',
-        'numpy'
+        'numpy',
+        'scikit-learn'
     ],
     zip_safe=False)
