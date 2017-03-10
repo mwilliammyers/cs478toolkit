@@ -57,7 +57,7 @@ def load(file_path,
          label_size=0,
          encode_nominal=True,
          add_bias=False,
-         shuffle=True):
+         shuffle=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal)
