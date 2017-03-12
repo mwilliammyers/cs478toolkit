@@ -43,7 +43,7 @@ def _parse_args():
     training_methods.add_argument(
         '-F',
         '--folds',
-        type=percent,
+        type=int,
         default=10,
         metavar='FOLDS',
         help='number of folds used for k-fold cross validation')

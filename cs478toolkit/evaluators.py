@@ -11,6 +11,7 @@ def rmse(predictions, targets):
 
 
 def measure_error(predictions, targets, evaluator=mse):
+    # print(predictions, targets)
     return evaluator(predictions, targets)
 
 
@@ -23,6 +24,8 @@ def evaluate(data, targets, predict_function, measure_functions=None, *args):
     if not measure_functions:
         measure_functions = [measure_error, measure_accuracy]
     predictions = []
-    for instance in data:
-        predictions.append(predict_function(instance, *args))
+    for instance, target in zip(data, targets):
+        p = predict_function(instance, *args)
+        # print(instance, p, target)
+        predictions.append(p)
     return (fn(predictions, targets) for fn in measure_functions)
