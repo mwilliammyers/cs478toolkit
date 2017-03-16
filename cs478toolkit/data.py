@@ -60,10 +60,10 @@ def load(file_path,
          shuffle=False):
     with open(file_path, 'r+') as f:
         try:
-            arff_data = arff.load(f, encode_nominal)
+            arff_data = arff.load(f, encode_nominal=encode_nominal)
         except arff.BadAttributeType:
             _fix_attribute_types(f)
-            arff_data = arff.load(f, encode_nominal)
+            arff_data = arff.load(f, encode_nominal=encode_nominal)
 
     data = np.array(arff_data['data'])
 
