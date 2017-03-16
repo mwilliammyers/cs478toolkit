@@ -53,7 +53,7 @@ def _parse_args():
         metavar='LAYER',
         nargs='+',
         type=int,
-        required=True,
+        required=False,
         help='layer sizes: <input> <hidden>... <output>')
     parser.add_argument(
         '-r', '--learning-rate', type=float, default=.1, help='learning rate')
