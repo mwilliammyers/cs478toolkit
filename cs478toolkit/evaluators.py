@@ -19,7 +19,12 @@ def measure_accuracy(predictions, targets):
     return np.minimum(1.0, accuracy)
 
 
-def evaluate(data, targets, predict_function, measure_functions=None, progress=False, *args):
+def evaluate(data,
+             targets,
+             predict_function,
+             measure_functions=None,
+             progress=False,
+             *args):
     if not measure_functions:
         measure_functions = [measure_error, measure_accuracy]
 
