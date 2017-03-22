@@ -30,8 +30,7 @@ def measure_error(predictions, targets, exact=True, evaluator=mse):
 def measure_accuracy(predictions, targets, exact=True):
     predictions, targets = _ensure_same_shape(predictions, targets)
     idx = predictions == targets if exact else np.isclose(predictions, targets)
-    accuracy = np.count_nonzero(idx) / len(targets)
-    return np.minimum(1.0, accuracy)
+    return np.minimum(1.0, np.count_nonzero(idx) / len(targets))
 
 
 def evaluate(data,
@@ -50,7 +49,7 @@ def evaluate(data,
             import tqdm
             it = tqdm.tqdm(data)
         except ImportError:
-            print("install tqdm to report progress")
+            print("install tqdm to display progress")
 
     predictions = []
     for instance in it:
