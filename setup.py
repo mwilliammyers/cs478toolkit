@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='cs478toolkit',
-    version='0.2.0',
+    version='0.2.1',
     description='Basic machine learning toolkit for BYU CS478',
     url='http://github.com/mwilliammyers/cs478',
     author='mwilliammyers',
