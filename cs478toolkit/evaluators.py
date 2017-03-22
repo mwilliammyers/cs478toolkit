@@ -2,8 +2,20 @@ from __future__ import division, print_function
 import numpy as np
 
 
+def _ensure_same_shape(predictions, targets):
+    predictions = np.atleast_1d(predictions).flatten()
+    targets = np.atleast_1d(targets).flatten()
+
+    if predictions.shape != targets.shape:
+        msg = "shape mismatch: cannot compare objects with different shapes"
+        raise ValueError(msg)
+
+    return predictions, targets
+
+
 def mse(predictions, targets):
-    return ((np.atleast_1d(predictions) - np.atleast_1d(targets))**2).mean()
+    predictions, targets = _ensure_same_shape(predictions, targets)
+    return ((predictions - targets)**2).mean()
 
 
 def rmse(predictions, targets):
@@ -15,6 +27,7 @@ def measure_error(predictions, targets, evaluator=mse):
 
 
 def measure_accuracy(predictions, targets):
+    predictions, targets = _ensure_same_shape(predictions, targets)
     accuracy = np.count_nonzero(predictions == targets) / len(targets)
     return np.minimum(1.0, accuracy)
 
