@@ -1,4 +1,4 @@
-from __future__ import division
+from __future__ import division, print_function
 import numpy as np
 
 
@@ -11,7 +11,6 @@ def rmse(predictions, targets):
 
 
 def measure_error(predictions, targets, evaluator=mse):
-    # print(predictions, targets)
     return evaluator(predictions, targets)
 
 
@@ -20,12 +19,20 @@ def measure_accuracy(predictions, targets):
     return np.minimum(1.0, accuracy)
 
 
-def evaluate(data, targets, predict_function, measure_functions=None, *args):
+def evaluate(data, targets, predict_function, measure_functions=None, progress=False, *args):
     if not measure_functions:
         measure_functions = [measure_error, measure_accuracy]
+
+    it = data
+    if progress:
+        try:
+            import tqdm
+            it = tqdm.tqdm(data)
+        except ImportError:
+            print("install tqdm to report progress")
+
     predictions = []
-    for instance, target in zip(data, targets):
-        p = predict_function(instance, *args)
-        # print(instance, p, target)
-        predictions.append(p)
+    for instance in it:
+        predictions.append(predict_function(instance, *args))
+
     return (fn(predictions, targets) for fn in measure_functions)
