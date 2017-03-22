@@ -2,7 +2,7 @@ import arff
 import numpy as np
 import re
 import sklearn.model_selection
-
+import sklearn.preprocessing
 
 def shuffle(features, labels):
     if features.shape[0] != labels.shape[0]:
@@ -56,8 +56,9 @@ def _fix_attribute_types(f):
 def load(file_path,
          label_size=0,
          encode_nominal=True,
-         add_bias=False,
-         shuffle=False):
+         normalize=True,
+         shuffle=False,
+         add_bias=False):
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal=encode_nominal)
@@ -73,4 +74,8 @@ def load(file_path,
     if add_bias:
         data = np.insert(data, -label_size, 1, axis=1)
 
-    return _split(data, label_size)
+    data, targets = _split(data, label_size)
+    if normalize:
+        # TODO: do this in numpy without sklearn dependency
+        sklearn.preprocessing.minmax_scale(data, copy=False)
+    return data, targets
