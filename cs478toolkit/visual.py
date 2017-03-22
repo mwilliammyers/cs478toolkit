@@ -7,9 +7,10 @@ def bar(title,
         figsize=None,
         xlim=None,
         ylim=None,
-        colors=['r', 'b', 'g', 'c', 'm', 'y', 'k']):
+        colors=['r', 'b', 'g', 'c', 'm', 'y', 'k'],
+        font_size=16):
+    import matplotlib
     if file:
-        import matplotlib
         # must be done before importing plt
         matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -18,6 +19,7 @@ def bar(title,
     except:
         pass
 
+    matplotlib.rcParams.update({'font.size': font_size})
     fig, ax = plt.subplots()
     bar_width = np.maximum(.15,
                            1. / (len(data.keys()) * len(data.values()[0])))
@@ -54,9 +56,10 @@ def plot(title,
          figsize=None,
          xlim=None,
          ylim=None,
-         colors=['r', 'b', 'g', 'c', 'm', 'y', 'k']):
+         colors=['r', 'b', 'g', 'c', 'm', 'y', 'k'],
+         font_size=16):
+    import matplotlib
     if file:
-        import matplotlib
         # must be done before importing plt
         matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -65,6 +68,7 @@ def plot(title,
     except:
         pass
 
+    matplotlib.rcParams.update({'font.size': font_size})
     plt.figure(figsize=figsize)
     plt.title(title)
 
