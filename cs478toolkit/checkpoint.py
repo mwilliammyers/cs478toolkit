@@ -1,6 +1,7 @@
 import numpy as np
 import errno
 
+
 def save(path, checkpoint):
     if checkpoint:
         np.save(open(path, 'w'), checkpoint)

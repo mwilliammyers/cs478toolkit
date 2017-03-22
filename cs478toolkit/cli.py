@@ -2,6 +2,7 @@ import argparse
 import random
 import numpy as np
 
+
 def percent(value):
     value = float(value)
     if not 0 < value <= 100:
