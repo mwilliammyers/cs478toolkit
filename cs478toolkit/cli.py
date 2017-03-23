@@ -57,6 +57,12 @@ def _parse_args():
         required=False,
         help='layer sizes: <input> <hidden>... <output>')
     parser.add_argument(
+        '-n',
+        '--normalize',
+        help='normalize input features between 0-1',
+        default=True,
+        action='store_true')
+    parser.add_argument(
         '-r', '--learning-rate', type=float, default=.1, help='learning rate')
     parser.add_argument('-s', '--seed', help='random seed')
     return parser
