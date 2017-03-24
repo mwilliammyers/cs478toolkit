@@ -1,23 +1,23 @@
-# cs478toolkit
+# lathe
 
-Basic machine learning toolkit for BYU CS478
+Basic machine learning tools for BYU CS478.
 
 ## requirements
 
 - [python2.7 or python3.3+](https://www.python.org/downloads/)
 - [pip](https://pip.pypa.io/en/stable/installing/) (_optional_)
 
-## installation 
+## installation
 
 ```
-pip install git+https://github.com/mwilliammyers/cs478toolkit
+pip install lathe
 ```
 
 ## usage
 
 ```python
-import cs478toolkit
+import lathe
 
-args = cs478toolkit.parse_args()
-data, targets = cs478toolkit.load(args.file, label_size=args.layers[-1])
+args = lathe.parse_args()
+data, targets = lathe.load(args.file, label_size=args.layers[-1])
 ```
