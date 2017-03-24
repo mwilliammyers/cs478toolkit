@@ -14,8 +14,7 @@ def _ensure_same_shape(predictions, targets):
 
 
 def mse(predictions, targets):
-    predictions, targets = _ensure_same_shape(predictions, targets)
-    return ((predictions - targets)**2).mean()
+    return np.nanmean((predictions - targets)**2, dtype=np.float64)
 
 
 def rmse(predictions, targets):
@@ -23,13 +22,14 @@ def rmse(predictions, targets):
 
 
 # TODO: figure out something better than not using exact
-def measure_error(predictions, targets, exact=True, evaluator=mse):
+def measure_error(predictions, targets, rtol=0, evaluator=mse):
+    predictions, targets = _ensure_same_shape(predictions, targets)
     return evaluator(predictions, targets)
 
 
-def measure_accuracy(predictions, targets, exact=True):
-    predictions, targets = _ensure_same_shape(predictions, targets)
-    idx = predictions == targets if exact else np.isclose(predictions, targets)
+def measure_accuracy(predictions, targets, rtol=0):
+    p, t = _ensure_same_shape(predictions, targets)
+    idx = np.isclose(p, t, rtol=rtol) if rtol else p == t
     return np.minimum(1.0, np.count_nonzero(idx) / len(targets))
 
 
@@ -37,7 +37,7 @@ def evaluate(data,
              targets,
              predict_function,
              measure_functions=None,
-             exact=True,
+             rtol=0,
              progress=False,
              *args):
     if not measure_functions:
@@ -55,4 +55,4 @@ def evaluate(data,
     for instance in it:
         predictions.append(predict_function(instance, *args))
 
-    return (fn(predictions, targets, exact=exact) for fn in measure_functions)
+    return (fn(predictions, targets, rtol=rtol) for fn in measure_functions)
