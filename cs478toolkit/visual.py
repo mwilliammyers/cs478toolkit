@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def bar(title,
         data,
         xlabel,
@@ -7,8 +10,7 @@ def bar(title,
         figsize=None,
         xlim=None,
         ylim=None,
-        colors=['r', 'b', 'g', 'c', 'm', 'y', 'k'],
-        font_size=16):
+        colors=['r', 'b', 'g', 'c', 'm', 'y', 'k']):
     if file:
         import matplotlib
         # must be done before importing plt
@@ -19,9 +21,8 @@ def bar(title,
     except:
         pass
 
-    plt.rcParams.update({'font.size': font_size})
     fig, ax = plt.subplots()
-    bar_width = np.maximum(.15,
+    bar_width = np.maximum(.05,
                            1. / (len(data.keys()) * len(data.values()[0])))
 
     index = np.arange(len(data.values()[0]))
@@ -42,6 +43,8 @@ def bar(title,
     plt.ylabel(ylabel)
     plt.legend(loc='best')
     plt.tight_layout()
+    plt.ylim(ylim)
+    plt.xlim(xlim)
 
     if file:
         plt.savefig(file, bbox_inches='tight', dpi=300)
