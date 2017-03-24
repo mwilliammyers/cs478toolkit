@@ -73,14 +73,25 @@ def _normalize(data):
     # sklearn.preprocessing.minmax_scale(data, copy=True)
     return (data - data.min(0)) / data.ptp(0)
 
+def _impute(data, strategy):
+
 
 def load(file_path,
          label_size=0,
          encode_nominal=True,
          one_hot=None,
+         impute=None,
          normalize=True,
          shuffle=False):
 
+    """Load an ARFF file.
+
+    Args:
+        file_path (str): The path of the ARFF formatted file to load.
+        label_size (int): The number of labels (outputs) the dataset to load has.
+        encode_nominal (bool): Whether or not to encode nominal atributes into ints.
+        one_hot (bool): 
+    """
     if one_hot is None:
         one_hot = encode_nominal
 
