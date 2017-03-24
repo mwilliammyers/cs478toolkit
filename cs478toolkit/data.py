@@ -1,6 +1,6 @@
+import re
 import arff
 import numpy as np
-import re
 import sklearn.model_selection
 import sklearn.preprocessing
 
@@ -42,7 +42,8 @@ def split(features, labels, percent):
     return features[:index], features[index:], labels[:index], labels[index:]
 
 
-# HACK: arff.load only accepts an open file descriptor and BYU CS uses a custom arff format
+# HACK: arff.load only accepts an open file descriptor
+# and BYU CS uses a custom arff format
 def _fix_attribute_types(f):
     # TODO: do not load entire contents of file into RAM at once
     f.seek(0)
@@ -64,7 +65,7 @@ def _find_nominal_index(data):
 def _one_hot(data, index):
     encoder = sklearn.preprocessing.OneHotEncoder(
         categorical_features=index, sparse=False, handle_unknown='ignore')
-    # TODO: figure out how to not screw up the index with encoder.feature_indices_
+    # TODO: How to not screw up the index? Use encoder.feature_indices_?
     return encoder.fit_transform(data)
 
 
@@ -78,8 +79,7 @@ def load(file_path,
          encode_nominal=True,
          one_hot=None,
          normalize=True,
-         shuffle=False,
-         add_bias=False):
+         shuffle=False):
 
     if one_hot is None:
         one_hot = encode_nominal
@@ -96,9 +96,6 @@ def load(file_path,
 
     if shuffle:
         np.random.shuffle(data)
-
-    if add_bias:
-        data = np.insert(data, -label_size, 1, axis=1)
 
     data, targets = _split(data, label_size)
 
