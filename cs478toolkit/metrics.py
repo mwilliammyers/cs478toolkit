@@ -1,4 +1,4 @@
-from __future__ import division, print_function
+from __future__ import division
 import numpy as np
 
 
@@ -14,7 +14,9 @@ def _ensure_same_shape(predictions, targets):
 
 
 def mse(predictions, targets):
-    return np.nanmean((predictions - targets)**2, dtype=np.float64)
+    # return sklearn.metrics.mean_squared_error(predictions, targets)
+    return np.nanmean((predictions - targets)**2)
+    # return np.sum((predictions - targets)**2)
 
 
 def rmse(predictions, targets):
