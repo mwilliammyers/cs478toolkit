@@ -47,7 +47,7 @@ def _fix_attribute_types(f):
     f.seek(0)
     s = f.read()
     f.seek(0)
-    s = re.sub(r'continuous', 'numeric', s, flags=re.IGNORECASE)
+    s = re.sub(r'continuous', 'real', s, flags=re.IGNORECASE)
     f.write(s)
     f.truncate()
     f.seek(0)
