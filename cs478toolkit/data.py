@@ -4,6 +4,7 @@ import re
 import sklearn.model_selection
 import sklearn.preprocessing
 
+
 def shuffle(features, labels):
     if features.shape[0] != labels.shape[0]:
         raise ValueError(
@@ -53,12 +54,36 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
+def _find_nominal_index(data):
+    return [
+        i for i, (_, kind) in enumerate(data)
+        if kind not in ['REAL', 'INTEGER', 'NUMERIC', 'STRING']
+    ]
+
+
+def _one_hot(data, index):
+    encoder = sklearn.preprocessing.OneHotEncoder(
+        categorical_features=index, sparse=False, handle_unknown='ignore')
+    # TODO: figure out how to not screw up the index with encoder.feature_indices_
+    return encoder.fit_transform(data)
+
+
+def _normalize(data):
+    # sklearn.preprocessing.minmax_scale(data, copy=True)
+    return (data - data.min(0)) / data.ptp(0)
+
+
 def load(file_path,
          label_size=0,
          encode_nominal=True,
+         one_hot=None,
          normalize=True,
          shuffle=False,
          add_bias=False):
+
+    if one_hot is None:
+        one_hot = encode_nominal
+
     with open(file_path, 'r+') as f:
         try:
             arff_data = arff.load(f, encode_nominal=encode_nominal)
@@ -66,7 +91,8 @@ def load(file_path,
             _fix_attribute_types(f)
             arff_data = arff.load(f, encode_nominal=encode_nominal)
 
-    data = np.array(arff_data['data'])
+    data = np.array(arff_data['data'], dtype=np.float)
+    # data = np.ma.array(data, mask=np.isnan(data))
 
     if shuffle:
         np.random.shuffle(data)
@@ -75,7 +101,15 @@ def load(file_path,
         data = np.insert(data, -label_size, 1, axis=1)
 
     data, targets = _split(data, label_size)
+
+    # have to do this twice because sklearn screws with the indices
+    if one_hot:
+        data_idx = _find_nominal_index(arff_data['attributes'][:-label_size])
+        data = _one_hot(data, data_idx)
+        target_idx = _find_nominal_index(arff_data['attributes'][-label_size:])
+        targets = _one_hot(targets, target_idx)
+
     if normalize:
-        # TODO: do this in numpy without sklearn dependency
-        sklearn.preprocessing.minmax_scale(data, copy=False)
+        data = _normalize(data)
+
     return data, targets
