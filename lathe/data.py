@@ -73,7 +73,9 @@ def _normalize(data):
     # sklearn.preprocessing.minmax_scale(data, copy=True)
     return (data - data.min(0)) / data.ptp(0)
 
+
 def _impute(data, strategy):
+    pass
 
 
 def load(file_path,
@@ -83,14 +85,27 @@ def load(file_path,
          impute=None,
          normalize=True,
          shuffle=False):
-
     """Load an ARFF file.
 
     Args:
         file_path (str): The path of the ARFF formatted file to load.
-        label_size (int): The number of labels (outputs) the dataset to load has.
-        encode_nominal (bool): Whether or not to encode nominal atributes into ints.
-        one_hot (bool): 
+    Keyword Args:
+        label_size (int, optional): The number of labels (outputs) the dataset
+            to load has.
+        encode_nominal (bool, optional): Whether or not to encode nominal
+            atributes into ints.
+        one_hot (bool, optional): Whether or not to use a one-hot encoder for
+            nominal attributes.
+        impute (str or `None`, optional): The strategy ("mean", "median",
+            "most_frequent") to use for imputing missing values.
+        normalize (bool, optional): Whether or not to normalize input features
+            between 0-1.
+        shuffle (bool, optional): Whether or not to shuffle data.
+
+    See Also:
+        - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
+        - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Imputer.html
+
     """
     if one_hot is None:
         one_hot = encode_nominal
