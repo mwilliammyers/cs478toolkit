@@ -100,8 +100,9 @@ def load(file_path,
             "most_frequent") to use for imputing missing values.
         normalize (bool, optional): Whether or not to normalize input features
             between 0-1.
-        shuffle (bool, optional): Whether or not to shuffle data.
-
+        shuffle (bool, optional): Whether or not to shuffle the data.
+    Returns:
+        (numpy.ndarray, numpy.ndarray): Tuple containing (data, targets).
     See Also:
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Imputer.html
