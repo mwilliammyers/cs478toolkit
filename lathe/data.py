@@ -96,10 +96,10 @@ def load(file_path,
         label_size (int, optional): The number of labels (outputs) the dataset
             to load has.
         encode_nominal (bool, optional): Whether or not to encode nominal
-            atributes into ints.
+            atributes as integers.
         one_hot_data (bool, optional): Whether or not to use a one-hot encoder
             for nominal attributes in `data`. Defaults to whatever the value of
-            encode_nominal is.
+            `encode_nominal` is.
         one_hot_targets (bool, optional): Whether or not to use a one-hot
             encoder for nominal attributes in `targets`.
         impute (str or `None`, optional): The strategy ("mean", "median",
