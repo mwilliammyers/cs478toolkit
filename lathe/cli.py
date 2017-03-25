@@ -69,6 +69,17 @@ def _parse_args():
 
 
 def parse_args(parser=_parse_args):
+    """Parse arguments from the command line.
+
+    Args:
+        parser (function, optional): The argument parsing function to use.
+
+    Returns:
+        :obj:`argparse.Namespace`: The parsed arguments.
+
+    See Also:
+        - https://docs.python.org/3.4/library/argparse.html#argparse.Namespace
+    """
     args, _ = parser().parse_known_args()
     if args.seed:
         # Use a seed for deterministic results
