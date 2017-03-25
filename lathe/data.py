@@ -82,7 +82,8 @@ def _impute(data, strategy, axis=0):
 def load(file_path,
          label_size=0,
          encode_nominal=True,
-         one_hot=None,
+         one_hot_data=None,
+         one_hot_targets=False,
          impute=None,
          normalize=True,
          shuffle=False):
@@ -96,8 +97,11 @@ def load(file_path,
             to load has.
         encode_nominal (bool, optional): Whether or not to encode nominal
             atributes into ints.
-        one_hot (bool, optional): Whether or not to use a one-hot encoder for
-            nominal attributes.
+        one_hot_data (bool, optional): Whether or not to use a one-hot encoder
+            for nominal attributes in `data`. Defaults to whatever the value of
+            encode_nominal is.
+        one_hot_targets (bool, optional): Whether or not to use a one-hot
+            encoder for nominal attributes in `targets`.
         impute (str or `None`, optional): The strategy ("mean", "median",
             "most_frequent") to use for imputing missing values.
         normalize (bool, optional): Whether or not to normalize input features
@@ -118,8 +122,8 @@ def load(file_path,
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Imputer.html
         - http://www.cs.waikato.ac.nz/ml/weka/arff.html
     """
-    if one_hot is None:
-        one_hot = encode_nominal
+    if one_hot_data is None:
+        one_hot_data = encode_nominal
 
     with open(file_path, 'r+') as f:
         try:
@@ -139,9 +143,10 @@ def load(file_path,
     data, targets = _split(data, label_size)
 
     # have to do this twice because sklearn screws with the indices
-    if one_hot:
+    if one_hot_data:
         data_idx = _find_nominal_index(arff_data['attributes'][:-label_size])
         data = _one_hot(data, data_idx)
+    if one_hot_targets:
         target_idx = _find_nominal_index(arff_data['attributes'][-label_size:])
         targets = _one_hot(targets, target_idx)
 
