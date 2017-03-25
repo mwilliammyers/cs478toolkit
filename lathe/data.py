@@ -74,8 +74,9 @@ def _normalize(data):
     return (data - data.min(0)) / data.ptp(0)
 
 
-def _impute(data, strategy):
-    pass
+def _impute(data, strategy, axis=0):
+    imputer = sklearn.preprocessing.Imputer(strategy=strategy, axis=axis)
+    return imputer.fit_transform(data)
 
 
 def load(file_path,
@@ -125,7 +126,9 @@ def load(file_path,
             arff_data = arff.load(f, encode_nominal=encode_nominal)
 
     data = np.array(arff_data['data'], dtype=np.float)
-    # data = np.ma.array(data, mask=np.isnan(data))
+
+    if impute:
+        data = _impute(data, strategy=impute)
 
     if shuffle:
         np.random.shuffle(data)
