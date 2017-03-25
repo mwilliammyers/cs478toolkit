@@ -69,11 +69,6 @@ def _one_hot(data, index):
     return encoder.fit_transform(data)
 
 
-def _normalize(data):
-    # sklearn.preprocessing.minmax_scale(data, copy=True)
-    return (data - data.min(0)) / data.ptp(0)
-
-
 def _impute(data, strategy, axis=0):
     imputer = sklearn.preprocessing.Imputer(strategy=strategy, axis=axis)
     return imputer.fit_transform(data)
@@ -85,7 +80,7 @@ def load(file_path,
          one_hot_data=None,
          one_hot_targets=False,
          impute=None,
-         normalize=True,
+         normalizer=None,
          shuffle=False):
     """Load an ARFF file.
 
@@ -104,8 +99,9 @@ def load(file_path,
             encoder for nominal attributes in `targets`.
         impute (str or `None`, optional): The strategy ("mean", "median",
             "most_frequent") to use for imputing missing values.
-        normalize (bool, optional): Whether or not to normalize input features
-            between 0-1.
+        normalizer (function, optional): A 1 arity function that accepts the
+            data to be scaled as a parameter and returns the scaled data.
+            e.g: `sklearn.preprocessing.scale`. Defaults to `None`.
         shuffle (bool, optional): Whether or not to shuffle the `data`.
 
     Returns:
@@ -150,7 +146,7 @@ def load(file_path,
         target_idx = _find_nominal_index(arff_data['attributes'][-label_size:])
         targets = _one_hot(targets, target_idx)
 
-    if normalize:
-        data = _normalize(data)
+    if normalizer:
+        data = normalizer(data)
 
     return arff_data['attributes'], data, targets
