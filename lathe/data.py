@@ -105,7 +105,10 @@ def load(file_path,
         shuffle (bool, optional): Whether or not to shuffle the `data`.
 
     Returns:
-        (`numpy.ndarray`, `numpy.ndarray`): Tuple containing (`data`, `targets`).
+        (list, `numpy.ndarray`, `numpy.ndarray`): Tuple containing
+        (`attributes`, `data`, `targets`). Where `attributes` is a list of
+        tuples containing (attribute_name, attribute_type), `data` are the
+        features and `targets` are the expected output for the dataset.
 
     Note:
         `targets` will be empty unless `label_size` >= 1.
@@ -145,4 +148,4 @@ def load(file_path,
     if normalize:
         data = _normalize(data)
 
-    return data, targets
+    return arff_data['attributes'], data, targets
