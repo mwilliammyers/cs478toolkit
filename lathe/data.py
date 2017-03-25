@@ -89,6 +89,7 @@ def load(file_path,
 
     Args:
         file_path (str): The path of the ARFF formatted file to load.
+
     Keyword Args:
         label_size (int, optional): The number of labels (outputs) the dataset
             to load has.
@@ -100,13 +101,18 @@ def load(file_path,
             "most_frequent") to use for imputing missing values.
         normalize (bool, optional): Whether or not to normalize input features
             between 0-1.
-        shuffle (bool, optional): Whether or not to shuffle the data.
+        shuffle (bool, optional): Whether or not to shuffle the `data`.
+
     Returns:
-        (numpy.ndarray, numpy.ndarray): Tuple containing (data, targets).
+        (`numpy.ndarray`, `numpy.ndarray`): Tuple containing (`data`, `targets`).
+
+    Note:
+        `targets` will be empty unless `label_size` >= 1.
+
     See Also:
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Imputer.html
-
+        - http://www.cs.waikato.ac.nz/ml/weka/arff.html
     """
     if one_hot is None:
         one_hot = encode_nominal
