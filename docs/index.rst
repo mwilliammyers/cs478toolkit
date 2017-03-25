@@ -4,7 +4,20 @@
    contain the root `toctree` directive.
 
 
-.. include:: ../README.rst
+lathe
+=====
+
+Basic machine learning tools for BYU CS478.
+
+.. image:: ./images/lathe.gif
+  :align: right
+
+contents
+--------
+
+  * :ref:`genindex`
+  * :ref:`modindex`
+  * :ref:`search`
 
 .. toctree::
    :maxdepth: 4
@@ -12,9 +25,30 @@
 
   modules
 
-indices
--------
+requirements
+------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+-  `python2.7 <https://www.python.org/downloads/>`__ or `python3.3+ <https://www.python.org/downloads/>`__
+-  `pip <https://pip.pypa.io/en/stable/installing/>`__ (*optional*)
+
+installation
+------------
+::
+
+   pip install lathe
+
+usage
+-----
+
+.. code:: python
+
+   import lathe
+
+   args = lathe.parse_args()
+   data, targets = lathe.load(args.file, label_size=1)
+
+
+documentation
+-------------
+
+http://lathe.readthedocs.io

@@ -3,13 +3,13 @@ lathe
 
 Basic machine learning tools for BYU CS478.
 
-.. image:: lathe.gif
+.. image:: docs/images/lathe.gif
    :align: center
 
 requirements
 ------------
 
--  `python2.7 or python3.3+ <https://www.python.org/downloads/>`__
+-  `python2.7 <https://www.python.org/downloads/>`__ or `python3.3+ <https://www.python.org/downloads/>`__
 -  `pip <https://pip.pypa.io/en/stable/installing/>`__ (*optional*)
 
 installation
@@ -27,7 +27,7 @@ usage
     import lathe
 
     args = lathe.parse_args()
-    data, targets = lathe.load(args.file, label_size=args.layers[-1])
+    data, targets = lathe.load(args.file, label_size=1)
 
 
 documentation
