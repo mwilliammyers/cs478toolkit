@@ -28,3 +28,9 @@ usage
 
     args = lathe.parse_args()
     data, targets = lathe.load(args.file, label_size=args.layers[-1])
+
+
+documentation
+-------------
+
+http://lathe.readthedocs.io
