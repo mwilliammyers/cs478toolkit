@@ -1,4 +1,4 @@
-lathe
+`lathe <http://lathe.readthedocs.io/>`__
 =====
 
 Basic machine learning tools for BYU CS478.
