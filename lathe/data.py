@@ -69,17 +69,12 @@ def _one_hot(data, index):
     return encoder.fit_transform(data)
 
 
-def _impute(data, strategy, axis=0):
-    imputer = sklearn.preprocessing.Imputer(strategy=strategy, axis=axis)
-    return imputer.fit_transform(data)
-
-
 def load(file_path,
          label_size=0,
          encode_nominal=True,
          one_hot_data=None,
          one_hot_targets=False,
-         impute=None,
+         imputer=None,
          normalizer=None,
          shuffle=False):
     """Load an ARFF file.
@@ -97,8 +92,10 @@ def load(file_path,
             `encode_nominal` is.
         one_hot_targets (bool, optional): Whether or not to use a one-hot
             encoder for nominal attributes in `targets`.
-        impute (str or `None`, optional): The strategy ("mean", "median",
-            "most_frequent") to use for imputing missing values.
+        imputer (str or `None`, optional): A 1 arity function that accepts the
+            dataset to impute missing values over.
+            e.g: `sklearn.preprocessing.Imputer().fit_transform`.
+            Defaults to `None`.
         normalizer (function, optional): A 1 arity function that accepts the
             data to be scaled as a parameter and returns the scaled data.
             e.g: `sklearn.preprocessing.scale`. Defaults to `None`.
@@ -130,8 +127,8 @@ def load(file_path,
 
     data = np.array(arff_data['data'], dtype=np.float)
 
-    if impute:
-        data = _impute(data, strategy=impute)
+    if imputer:
+        data = imputer(data)
 
     if shuffle:
         np.random.shuffle(data)
