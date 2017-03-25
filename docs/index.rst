@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 
-lathe
+`lathe <https://github.com/mwilliammyers/lathe/>`__
 =====
 
 Basic machine learning tools for BYU CS478.
