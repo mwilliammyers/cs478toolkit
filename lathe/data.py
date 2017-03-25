@@ -81,8 +81,6 @@ def load(file_path,
 
     Args:
         file_path (str): The path of the ARFF formatted file to load.
-
-    Keyword Args:
         label_size (int, optional): The number of labels (outputs) the dataset
             to load has.
         encode_nominal (bool, optional): Whether or not to encode nominal
@@ -92,7 +90,7 @@ def load(file_path,
             `encode_nominal` is.
         one_hot_targets (bool, optional): Whether or not to use a one-hot
             encoder for nominal attributes in `targets`.
-        imputer (str or `None`, optional): A 1 arity function that accepts the
+        imputer (function, optional): A 1 arity function that accepts the
             dataset to impute missing values over.
             e.g: `sklearn.preprocessing.Imputer().fit_transform`.
             Defaults to `None`.
