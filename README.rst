@@ -3,6 +3,9 @@ lathe
 
 Basic machine learning tools for BYU CS478.
 
+.. image:: lathe.gif
+   :align: center
+
 requirements
 ------------
 
