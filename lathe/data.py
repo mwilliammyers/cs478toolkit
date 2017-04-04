@@ -123,7 +123,8 @@ def load(file_path,
             _fix_attribute_types(f)
             arff_data = arff.load(f, encode_nominal=encode_nominal)
 
-    data = np.array(arff_data['data'], dtype=np.float)
+    dtype = np.float if encode_nominal else None
+    data = np.array(arff_data['data'], dtype=dtype)
 
     if imputer:
         data = imputer(data)
