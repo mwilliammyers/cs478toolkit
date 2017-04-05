@@ -59,7 +59,7 @@ def plot(title,
          figsize=None,
          xlim=None,
          ylim=None,
-         colors=['r', 'b', 'g', 'c', 'm', 'y', 'k'],
+         colors=['b', 'g', 'r', 'c', 'm', 'y', 'k'],
          font_size=16):
     if file:
         import matplotlib
@@ -67,8 +67,10 @@ def plot(title,
         matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     try:
-        import seaborn
-    except:
+        import seaborn as sns
+        sns.set_color_codes()
+        # colors = sns.color_palette('colorblind')
+    except ImportError:
         pass
 
     plt.rcParams.update({'font.size': font_size})
