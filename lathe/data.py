@@ -72,7 +72,7 @@ def _one_hot(data, index):
 def load(file_path,
          label_size=0,
          encode_nominal=True,
-         one_hot_data=None,
+         one_hot_data=False,
          one_hot_targets=False,
          imputer=None,
          normalizer=None,
@@ -106,7 +106,7 @@ def load(file_path,
         features and `targets` are the expected output for the dataset.
 
     Note:
-        `targets` will be empty unless `label_size` >= 1.
+        `targets` will be `None` unless `label_size` >= 1.
 
     See Also:
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
@@ -140,7 +140,9 @@ def load(file_path,
 
     idx = -label_size if label_size else None
 
-    data, targets = _split(data, idx)
+    targets = None
+    if label_size != 0:
+        data, targets = _split(data, idx)
 
     # have to do this twice because sklearn screws with the indices
     if one_hot_data:
