@@ -5,6 +5,20 @@ import sklearn.model_selection
 import sklearn.preprocessing
 
 
+def minmax_scale(data, axis=0):
+    """Transforms features by scaling `data` along `axis` between 0-1.
+
+    Args:
+        data (`np.ndarray`): The data to scale.
+        axis (int): The axis to scale along.
+
+    Returns:
+        (`np.ndarray`): The scaled data.
+    """
+    return (data - np.nanmin(data, axis=axis)) / (
+        np.nanmax(data, axis=axis) - np.nanmin(data, axis=axis))
+
+
 def shuffle(features, labels):
     if features.shape[0] != labels.shape[0]:
         raise ValueError(
