@@ -113,6 +113,12 @@ def load(file_path,
         - http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Imputer.html
         - http://www.cs.waikato.ac.nz/ml/weka/arff.html
     """
+    if label_size < 0:
+        raise ValueError('label_size must be >= 0')
+
+    if label_size == 0 and one_hot_targets:
+        raise ValueError('label_size must be > 0 if one_hot_targets == True')
+
     if one_hot_data is None:
         one_hot_data = encode_nominal
 
@@ -134,12 +140,13 @@ def load(file_path,
 
     data, targets = _split(data, label_size)
 
+    idx = -label_size if label_size else None
     # have to do this twice because sklearn screws with the indices
     if one_hot_data:
-        data_idx = _find_nominal_index(arff_data['attributes'][:-label_size])
+        data_idx = _find_nominal_index(arff_data['attributes'][:idx])
         data = _one_hot(data, data_idx)
     if one_hot_targets:
-        target_idx = _find_nominal_index(arff_data['attributes'][-label_size:])
+        target_idx = _find_nominal_index(arff_data['attributes'][idx:])
         targets = _one_hot(targets, target_idx)
 
     if normalizer:
