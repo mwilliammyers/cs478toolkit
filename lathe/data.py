@@ -110,7 +110,7 @@ def load(file_path,
             Defaults to `None`.
         normalizer (function, optional): A 1 arity function that accepts the
             data to be scaled as a parameter and returns the scaled data.
-            e.g: `sklearn.preprocessing.scale`. Defaults to `None`.
+            e.g: `lathe.minmax_scale`. Defaults to `None`.
         shuffle (bool, optional): Whether or not to shuffle the `data`.
 
     Returns:
