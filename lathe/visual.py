@@ -10,15 +10,16 @@ def bar(title,
         figsize=None,
         xlim=None,
         ylim=None,
-        colors=['r', 'b', 'g', 'c', 'm', 'y', 'k']):
+        colors=['b', 'g', 'r', 'c', 'm', 'y', 'k']):
     if file:
         import matplotlib
         # must be done before importing plt
         matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     try:
-        import seaborn
-    except:
+        import seaborn as sns
+        sns.set_color_codes()
+    except ImportError:
         pass
 
     fig, ax = plt.subplots()
