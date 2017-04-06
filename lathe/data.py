@@ -18,8 +18,8 @@ def k_fold(data, n_splits, shuffle=False):
     return sklearn.model_selection.KFold(n_splits, shuffle=shuffle).split(data)
 
 
-def _split(data, label_size):
-    return data[:, :-label_size], data[:, -label_size:]
+def _split(data, index):
+    return data[:, :index], data[:, index:]
 
 
 # def split(data, percent_chunks, axis=0):
@@ -138,9 +138,10 @@ def load(file_path,
     if shuffle:
         np.random.shuffle(data)
 
-    data, targets = _split(data, label_size)
-
     idx = -label_size if label_size else None
+
+    data, targets = _split(data, idx)
+
     # have to do this twice because sklearn screws with the indices
     if one_hot_data:
         data_idx = _find_nominal_index(arff_data['attributes'][:idx])
