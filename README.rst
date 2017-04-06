@@ -6,6 +6,8 @@ Basic machine learning tools for BYU CS478.
 .. image:: docs/images/lathe.gif
    :align: center
 
+.. inclusion-marker-do-not-remove
+
 requirements
 ------------
 
