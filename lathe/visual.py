@@ -55,6 +55,7 @@ def bar(title,
 def plot(title,
          xdata,
          ydata,
+         ylabel=None,
          file=None,
          figsize=None,
          xlim=None,
@@ -95,7 +96,7 @@ def plot(title,
     plt.xlim(xlim)
     plt.ylim(ylim)
     plt.xlabel(xdata[0])
-    plt.ylabel(", ".join([y[0] for y in ydata]))
+    plt.ylabel(ylabel if ylabel else ', '.join([y[0] for y in ydata]))
     plt.tight_layout()
 
     if file:
