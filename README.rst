@@ -27,7 +27,7 @@ usage
     import lathe
 
     args = lathe.parse_args()
-    data, targets = lathe.load(args.file, label_size=1)
+    attributes, data, targets = lathe.load(args.file, label_size=1)
 
 
 documentation
