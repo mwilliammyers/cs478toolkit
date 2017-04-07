@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='lathe',
-    version='0.2.4',
+    version='0.2.5',
     description='Basic machine learning toolkit for BYU CS478',
     url='http://github.com/mwilliammyers/lathe',
     author='mwilliammyers',
