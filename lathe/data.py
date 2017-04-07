@@ -145,6 +145,8 @@ def load(file_path,
 
     dtype = np.float if encode_nominal else None
     data = np.array(arff_data['data'], dtype=dtype)
+    if not encode_nominal:
+        data = np.where(data == np.array(None), np.nan, data)
 
     if imputer:
         data = imputer(data)
