@@ -169,6 +169,7 @@ def load(file_path,
         targets = _one_hot(targets, target_idx)
 
     if normalizer:
+        # FIXME: only normalize continuous attributes
         data = normalizer(data)
 
     return arff_data['attributes'], data, targets
