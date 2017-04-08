@@ -77,11 +77,11 @@ def _find_nominal_index(data):
     ]
 
 
-def continuous_index(attributes):
+def get_continuous_index(attributes):
     return np.array([x[1] == 'REAL' for x in attributes])
 
 
-def nominal_index(attributes):
+def get_nominal_index(attributes):
     return np.array([x[1] != 'REAL' for x in attributes])
 
 
@@ -167,7 +167,7 @@ def load(file_path,
     attributes = arff_data['attributes']
 
     if normalizer:
-        cont_index = continuous_index(attributes)
+        cont_index = get_continuous_index(attributes)
         data[:, cont_index] = normalizer(data[:, cont_index])
 
     targets = None
