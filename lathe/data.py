@@ -69,11 +69,20 @@ def _fix_attribute_types(f):
     f.seek(0)
 
 
+# TODO: do we need this function as well?
 def _find_nominal_index(data):
     return [
         i for i, (_, kind) in enumerate(data)
         if kind not in ['REAL', 'INTEGER', 'NUMERIC', 'STRING']
     ]
+
+
+def continuous_index(attributes):
+    return np.array([x[1] == 'REAL' for x in attributes])
+
+
+def nominal_index(attributes):
+    return np.array([x[1] != 'REAL' for x in attributes])
 
 
 def _one_hot(data, index):

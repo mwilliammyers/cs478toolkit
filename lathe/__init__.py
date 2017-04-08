@@ -1,9 +1,10 @@
 from lathe.visual import bar, plot
 from lathe.cli import parse_args
-from lathe.data import load, shuffle, split, k_fold, minmax_scale
+from lathe.data import load, shuffle, split, k_fold, minmax_scale, continuous_index, nominal_index
 from lathe.metrics import measure_error, measure_accuracy, evaluate
 
 __all__ = [
     'bar', 'plot', 'parse_args', 'load', 'shuffle', 'split', 'k_fold',
-    'minmax_scale', 'measure_error', 'measure_accuracy', 'evaluate'
+    'minmax_scale', 'measure_error', 'measure_accuracy', 'evaluate',
+    'continuous_index', 'nominal_index'
 ]
