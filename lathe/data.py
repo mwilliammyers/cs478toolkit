@@ -153,7 +153,7 @@ def load(file_path,
             arff_data = arff.load(f, encode_nominal=encode_nominal)
 
     dtype = np.float if encode_nominal else None
-    data = np.array(arff_data['data'], dtype=dtype)
+    data = np.atleast_2d(np.array(arff_data['data'], dtype=dtype))
     if not encode_nominal:
         data = np.where(data == np.array(None), np.nan, data)
 
@@ -163,22 +163,23 @@ def load(file_path,
     if shuffle:
         np.random.shuffle(data)
 
-    idx = -label_size if label_size else None
+    index = -label_size if label_size else None
+    attributes = arff_data['attributes']
+
+    if normalizer:
+        cont_index = continuous_index(attributes)
+        data[:, cont_index] = normalizer(data[:, cont_index])
 
     targets = None
     if label_size != 0:
-        data, targets = _split(data, idx)
+        data, targets = _split(data, index)
 
     # have to do this twice because sklearn screws with the indices
     if one_hot_data:
-        data_idx = _find_nominal_index(arff_data['attributes'][:idx])
-        data = _one_hot(data, data_idx)
+        data_index = _find_nominal_index(attributes[:index])
+        data = _one_hot(data, data_index)
     if one_hot_targets:
-        target_idx = _find_nominal_index(arff_data['attributes'][idx:])
-        targets = _one_hot(targets, target_idx)
+        target_index = _find_nominal_index(attributes[index:])
+        targets = _one_hot(targets, target_index)
 
-    if normalizer:
-        # FIXME: only normalize continuous attributes
-        data = normalizer(data)
-
-    return arff_data['attributes'], data, targets
+    return attributes, data, targets
